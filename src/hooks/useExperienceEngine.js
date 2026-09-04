@@ -192,10 +192,11 @@ export function useExperienceEngine(refs, fragmentsData, { onFinish }) {
       hint.style.opacity = '1';
     }
     function dismissBigPictureHint() {
-      if (!inBigPicture) return;
-      hideHint();
-      continueBtn.style.opacity = '1';
-    }
+    if (!inBigPicture) return;
+    hideHint();
+    continueBtn.style.opacity = '1';
+    continueBtn.style.pointerEvents = 'auto';
+    } 
     function finishExperience() {
       if (locked) return;
       locked = true;

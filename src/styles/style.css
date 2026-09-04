@@ -400,7 +400,7 @@ h1.prompt{
 #continue-btn{
   position:absolute; bottom:34px; left:50%; transform:translateX(-50%);
   z-index:21; opacity:0; transition:opacity 600ms ease;
-  pointer-events:auto;
+  pointer-events:none;
   height:40px; padding:0 24px;
   display:flex; align-items:center; justify-content:center;
 }
