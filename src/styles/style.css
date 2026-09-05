@@ -369,6 +369,14 @@ h1.prompt{
   box-shadow:0 2px 10px rgba(0,0,0,.06);
   max-width:88vw;
 }
+
+#hint svg{ flex-shrink:0; }
+#hint-text{
+  min-width:0;
+  white-space:normal;
+  overflow-wrap:break-word;
+}
+
 #hint.muted{ font-size:13px; background:rgba(255,255,255,.68); }
 
 #breathe-wrap{
