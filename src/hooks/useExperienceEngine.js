@@ -31,6 +31,7 @@ export function useExperienceEngine(refs, fragmentsData, { onFinish }) {
     let miniMood = null;
     let breathTimer = null;
     let tweenStart = 0, tweenFromZ = 0, tweenToZ = 0, tweenDuration = EXHALE_MS;
+    let organized = false;
 
     function setMiniMood(mood) {
       if (mood === miniMood) return;
@@ -80,18 +81,20 @@ export function useExperienceEngine(refs, fragmentsData, { onFinish }) {
       });
     }
 
-    function runBreathCycle() {
-      if (locked || stepIndex >= CHECKPOINTS.length) return;
-      breatheWrap.style.opacity = '1';
-      breatheLabel.textContent = 'Inhale';
-      setRingPhase(true, INHALE_MS);
-      clearTimeout(breathTimer);
-      breathTimer = setTimeout(() => {
-        breatheLabel.textContent = 'Exhale';
-        setRingPhase(false, EXHALE_MS);
-        beginDrift(EXHALE_MS);
-      }, INHALE_MS);
-    }
+function runBreathCycle() {
+  if (locked || stepIndex >= CHECKPOINTS.length) return;
+  breatheWrap.style.opacity = '1';
+  breatheWrap.classList.remove('exhale-phase');
+  breatheLabel.textContent = 'Inhale';
+  setRingPhase(true, INHALE_MS);
+  clearTimeout(breathTimer);
+  breathTimer = setTimeout(() => {
+    breatheWrap.classList.add('exhale-phase');
+    breatheLabel.textContent = 'Exhale';
+    setRingPhase(false, EXHALE_MS);
+    beginDrift(EXHALE_MS);
+  }, INHALE_MS);
+}
     function scheduleNextBreath() {
       clearTimeout(breathTimer);
       breathTimer = setTimeout(runBreathCycle, BREATH_PAUSE_MS);
@@ -112,6 +115,7 @@ export function useExperienceEngine(refs, fragmentsData, { onFinish }) {
         fog.classList.add('lifted');
       }
     }
+    
 
     function render() {
       const now = Date.now();
@@ -138,9 +142,10 @@ export function useExperienceEngine(refs, fragmentsData, { onFinish }) {
         el.style.opacity = local;
         const scaleUp = lerp(0.7, 1, local);
         meta.currentScale = scaleUp;
-        const swayY = local > 0.05 ? Math.sin(now / 2200 + i * 1.7) * 4 * local : 0;
-        const swayRot = local > 0.05 ? Math.sin(now / 3000 + i) * 1.4 * local : 0;
-        el.style.transform = `translate(-50%,-50%) translate(0px, ${swayY}px) scale(${scaleUp}) rotate(${def.rot + swayRot}deg)`;
+        const swayY = (!organized && local > 0.05) ? Math.sin(now / 2200 + i * 1.7) * 4 * local : 0;
+const swayRot = (!organized && local > 0.05) ? Math.sin(now / 3000 + i) * 1.4 * local : 0;
+const rot = organized ? 0 : (def.rot + swayRot);
+el.style.transform = `translate(-50%,-50%) translate(0px, ${swayY}px) scale(${scaleUp}) rotate(${rot}deg)`;
       });
 
       const bgFrom = [255, 255, 255];
@@ -180,17 +185,55 @@ export function useExperienceEngine(refs, fragmentsData, { onFinish }) {
       raf = requestAnimationFrame(tick);
     }
 
-    function enterBigPicture() {
-      inBigPicture = true;
-      hideHint();
-      resetCanvasTransform();
-      fragEls.forEach(el => el && el.classList.add('tappable'));
-      experienceScreen.classList.add('pannable');
-      hintText.textContent = 'Tap anything to look closer — drag to rearrange, pinch or scroll to explore';
-      hint.classList.remove('muted');
-      hint.classList.add('no-icon');
-      hint.style.opacity = '1';
-    }
+  function enterBigPicture() {
+  inBigPicture = true;
+  hideHint();
+  resetCanvasTransform();
+  organizeIntoColumns();
+  experienceScreen.classList.add('pannable');
+  setTimeout(() => {
+    fragEls.forEach(el => el && el.classList.add('tappable'));
+    hintText.textContent = 'Tap anything to look closer — drag to rearrange, pinch or scroll to explore';
+    hint.classList.remove('muted');
+    hint.classList.add('no-icon');
+    hint.style.opacity = '1';
+  }, 1000);
+}
+
+    // Once everything's visible, it stops being a scattered pile and becomes
+// a tidy list — one column per fragment type. This is what actually
+// resolves the "overwhelming wall of notes" feeling: density stays,
+// chaos doesn't.
+const ROW_GAP_PERCENT = { bubble:13, sticky:22, photostrip:30, polaroid:21, receipt:27, reframe:22 };
+function organizeIntoColumns(){
+  const groups = {};
+  const order = [];
+  fragMeta.forEach((meta, i) => {
+    const t = meta.def.type;
+    if(!groups[t]){ groups[t] = []; order.push(t); }
+    groups[t].push(i);
+  });
+  const numCols = order.length;
+  const marginX = 10, marginY = 14;
+  const colWidth = (100 - marginX*2) / numCols;
+  order.forEach((type, colIdx) => {
+    const indices = groups[type];
+    const colLeft = marginX + colWidth*colIdx + colWidth/2;
+    const rowGap = ROW_GAP_PERCENT[type] || 14;
+    indices.forEach((fragIndex, rowIdx) => {
+      const el = fragEls[fragIndex];
+      if(!el) return;
+      el.style.transition = 'top 900ms ease, left 900ms ease';
+      el.style.top = (marginY + rowIdx*rowGap) + '%';
+      el.style.left = colLeft + '%';
+    });
+  });
+  organized = true;
+  setTimeout(() => {
+    fragEls.forEach(el => { if(el) el.style.transition = ''; });
+  }, 950);
+}
+
     function dismissBigPictureHint() {
     if (!inBigPicture) return;
     hideHint();
@@ -277,7 +320,7 @@ export function useExperienceEngine(refs, fragmentsData, { onFinish }) {
 
     let topZ = 9;
     function bringToFront(el) { topZ += 1; el.style.zIndex = topZ; }
-
+    
     const dragCleanups = [];
     function wireDraggable(el, cardEl, getBaseScale) {
       let startX = 0, startY = 0, startLeft = 0, startTop = 0, moved = 0, dragging = false;

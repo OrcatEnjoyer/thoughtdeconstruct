@@ -289,7 +289,7 @@ h1.prompt{
   border-radius:8px;
   padding:10px 14px;
   box-shadow:0 8px 16px 0 rgba(0,0,0,.08);
-  max-width:150px;
+  width:150px;
   text-align:center;
 }
 .card.tone-turq{ background:var(--turquoise-3); }
@@ -372,7 +372,7 @@ h1.prompt{
 #hint.muted{ font-size:13px; background:rgba(255,255,255,.68); }
 
 #breathe-wrap{
-  position:absolute; bottom:36px; left:50%; transform:translateX(-50%);
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
   z-index:20; display:flex; align-items:center; justify-content:center;
   opacity:0; transition:opacity 500ms ease;
 }
@@ -382,7 +382,7 @@ h1.prompt{
   transform:scale(0.82); opacity:.15;
   box-shadow:0 0 0px rgba(0,196,179,0);
   transition:transform 6s cubic-bezier(.45,0,.55,1), opacity 6s cubic-bezier(.45,0,.55,1),
-             box-shadow 6s cubic-bezier(.45,0,.55,1);
+             box-shadow 6s cubic-bezier(.45,0,.55,1), border-color 1s ease;
 }
 #breathe-ring-1{ width:108px; height:108px; border-color:var(--turquoise-1); border-width:2.5px; }
 #breathe-ring-2{ width:140px; height:140px; }
@@ -390,12 +390,18 @@ h1.prompt{
 #breathe-ring-4{ width:208px; height:208px; }
 #breathe-core{
   position:relative; z-index:1;
-  width:84px; height:84px; border-radius:50%;
-  background:var(--turquoise-1); color:var(--white);
+  width:120px; height:120px; border-radius:50%;
+  background:rgba(0,196,179,.55); color:var(--white);
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:1px; box-shadow:0 8px 20px rgba(0,196,179,.28);
+  backdrop-filter:blur(4px);
 }
-#breathe-label{ font-size:12px; font-weight:700; line-height:1.2; }
+#breathe-label{ font-size:18px; font-weight:700; line-height:1.2; }
+
+#breathe-core{ transition: background 1s ease; }
+#breathe-wrap.exhale-phase #breathe-core{ background: rgba(31,119,223,.55); }
+#breathe-wrap.exhale-phase .breathe-ring{ border-color: var(--blue-1); }
+
 
 #continue-btn{
   position:absolute; bottom:34px; left:50%; transform:translateX(-50%);
@@ -465,5 +471,11 @@ h1.prompt{
 
 @media (max-width:480px){
   #progress-track{ width:90px; }
-  .card{ font-size:13px; max-width:120px; padding:8px 10px; }
+  .card{ font-size:12px; width:118px; padding:7px 9px; }
+  .card.type-sticky{ width:88px; }
+  .card.type-photostrip{ width:58px; }
+  .card.type-receipt{ width:100px; }
+  .card.type-polaroid{ width:76px; }
+  .polaroid-photo{ width:60px; height:48px; }
+  .receipt-line, .receipt-sub{ font-size:6.5px; }
 }

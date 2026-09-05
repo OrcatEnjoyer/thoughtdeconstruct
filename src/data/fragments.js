@@ -42,11 +42,6 @@ export const fragments = assignPositions(assignTimings([
   { type: 'sticky', text: 'Maybe tomorrow' },
   { type: 'bubble', text: 'do they actually like me?' },
   { type: 'polaroid', photoColor: '#cbb98a', text: 'Congrats!' },
-
-  { type: 'bubble', text: "I wonder if they remember that too.", tone: 'blue' },
-  { type: 'bubble', text: "That conversation ended three years ago and I'm still thinking about it." },
-  { type: 'bubble', text: "I was supposed to become someone by now.", tone: 'blue' },
-  { type: 'bubble', text: "Maybe nothing is wrong. Maybe I'm just tired." },
   { type: 'bubble', text: "I should've taken more pictures.", tone: 'blue' },
   { type: 'bubble', text: "There are places I'll probably never see again." },
   { type: 'bubble', text: "Why does that song still feel like a person?", tone: 'blue' },
@@ -61,11 +56,6 @@ export const fragments = assignPositions(assignTimings([
   { type: 'bubble', text: "need to text him back" },
   { type: 'bubble', text: "that was a good day, actually", tone: 'blue' },
   { type: 'bubble', text: "should probably drink more water" },
-
-  { type: 'sticky', lines: ['Password ideas:', 'no', 'nope', 'definitely not'] },
-{ type: 'sticky', doodle: '🌙', text: 'couldn\'t sleep again' },
-{ type: 'sticky', lines: ["Movie night?", "- popcorn", "- blanket", "- don't fall asleep this time"] },
-{ type: 'sticky', doodle: '☕️', text: 'one more cup won\'t hurt' },
 
 { type: 'photostrip', backing: '#8a6f52', c1: '#e8d9c3', c2: '#d4c2a5', c3: '#c9b48f', c4: '#e0cfae' },
 { type: 'photostrip', backing: '#3d5a5c', c1: '#a8c4c2', c2: '#8fb0ad', c3: '#b5cfcd', c4: '#96b3b0' },
