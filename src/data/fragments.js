@@ -37,7 +37,7 @@ export const fragments = assignPositions(assignTimings([
   { type: 'sticky', doodle: '🐱' },
   { type: 'bubble', text: 'am I running out of time?', tone: 'blue' },
   { type: 'sticky', lines: ['To do list:', 'nothing'] },
-  { type: 'sticky', doodle: '💪', text: 'GYM TOMORROW!!!' },
+  { type: 'sticky', doodle: '💪', text: 'GYM' },
   { type: 'bubble', text: 'I laughed so hard!', tone: 'blue' },
   { type: 'sticky', text: 'Maybe tomorrow' },
   { type: 'bubble', text: 'do they actually like me?' },
