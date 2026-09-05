@@ -364,7 +364,7 @@ h1.prompt{
   opacity:0; transition:opacity 500ms ease;
   z-index:20; text-align:center;
   background:rgba(255,255,255,.82);
-  height:40px; padding:0 16px; border-radius:999px;
+  min-height:40px; padding:10px 18px; border-radius:20px;
   display:flex; align-items:center; justify-content:center; gap:8px;
   box-shadow:0 2px 10px rgba(0,0,0,.06);
   max-width:88vw;
@@ -478,4 +478,5 @@ h1.prompt{
   .card.type-polaroid{ width:76px; }
   .polaroid-photo{ width:60px; height:48px; }
   .receipt-line, .receipt-sub{ font-size:6.5px; }
+  #hint{ font-size:12.5px; max-width:82vw; padding:9px 14px; }
 }
