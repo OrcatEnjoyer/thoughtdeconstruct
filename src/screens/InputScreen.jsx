@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const CHIPS = ["I'm falling behind.", "I can't handle this.", "I'm not good enough."];
 
 export default function InputScreen({ onContinue }) {
   const [value, setValue] = useState('');
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   function handleContinue() {
     onContinue((value || "I'm falling behind.").trim());
@@ -14,6 +19,7 @@ export default function InputScreen({ onContinue }) {
       <p className="eyebrow">01 • Put the thought outside</p>
       <h1 className="prompt">Is there a thought that's been weighing on you?</h1>
       <input
+        ref={inputRef}
         type="text"
         className="thought-input"
         id="thought-field"
