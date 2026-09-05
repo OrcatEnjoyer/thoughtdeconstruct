@@ -52,19 +52,19 @@ export function useExperienceEngine(refs, fragmentsData, { onFinish }) {
     }
 
     const RING_TARGETS = {
-      expand: [
-        { scale: 1.14, opacity: .6, glow: '0 0 18px rgba(0,196,179,.55)' },
-        { scale: 1.28, opacity: .4, glow: '0 0 14px rgba(0,196,179,.4)' },
-        { scale: 1.42, opacity: .24, glow: '0 0 10px rgba(0,196,179,.25)' },
-        { scale: 1.56, opacity: .12, glow: '0 0 8px rgba(0,196,179,.15)' },
-      ],
-      rest: [
-        { scale: 0.84, opacity: .22, glow: '0 0 0px rgba(0,196,179,0)' },
-        { scale: 0.78, opacity: .14, glow: '0 0 0px rgba(0,196,179,0)' },
-        { scale: 0.72, opacity: .08, glow: '0 0 0px rgba(0,196,179,0)' },
-        { scale: 0.66, opacity: .04, glow: '0 0 0px rgba(0,196,179,0)' },
-      ],
-    };
+  expand: [
+    { scale: 1.14, opacity: .6, glow: '0 0 18px rgba(0,196,179,.55)' },
+    { scale: 1.28, opacity: .4, glow: '0 0 14px rgba(0,196,179,.4)' },
+    { scale: 1.42, opacity: .24, glow: '0 0 10px rgba(0,196,179,.25)' },
+    { scale: 1.56, opacity: .12, glow: '0 0 8px rgba(0,196,179,.15)' },
+  ],
+  rest: [
+    { scale: 0.84, opacity: .22, glow: '0 0 0px rgba(0,196,179,0)' },
+    { scale: 0.78, opacity: .14, glow: '0 0 0px rgba(0,196,179,0)' },
+    { scale: 0.72, opacity: .08, glow: '0 0 0px rgba(0,196,179,0)' },
+    { scale: 0.66, opacity: .04, glow: '0 0 0px rgba(0,196,179,0)' },
+  ],
+};
     function setRingPhase(expanding, durationMs) {
       const targets = expanding ? RING_TARGETS.expand : RING_TARGETS.rest;
       breatheRings.forEach((ring, i) => {
@@ -81,20 +81,20 @@ export function useExperienceEngine(refs, fragmentsData, { onFinish }) {
       });
     }
 
-function runBreathCycle() {
-  if (locked || stepIndex >= CHECKPOINTS.length) return;
-  breatheWrap.style.opacity = '1';
-  breatheWrap.classList.remove('exhale-phase');
-  breatheLabel.textContent = 'Inhale';
-  setRingPhase(true, INHALE_MS);
-  clearTimeout(breathTimer);
-  breathTimer = setTimeout(() => {
-    breatheWrap.classList.add('exhale-phase');
-    breatheLabel.textContent = 'Exhale';
-    setRingPhase(false, EXHALE_MS);
-    beginDrift(EXHALE_MS);
-  }, INHALE_MS);
-}
+    function runBreathCycle() {
+      if (locked || stepIndex >= CHECKPOINTS.length) return;
+      breatheWrap.style.opacity = '1';
+      breatheWrap.classList.remove('exhale-phase');
+      breatheLabel.textContent = 'Inhale';
+      setRingPhase(true, INHALE_MS);
+      clearTimeout(breathTimer);
+      breathTimer = setTimeout(() => {
+        breatheWrap.classList.add('exhale-phase');
+        breatheLabel.textContent = 'Exhale';
+        setRingPhase(false, EXHALE_MS);
+        beginDrift(EXHALE_MS);
+      }, INHALE_MS);
+    }
     function scheduleNextBreath() {
       clearTimeout(breathTimer);
       breathTimer = setTimeout(runBreathCycle, BREATH_PAUSE_MS);
@@ -115,7 +115,6 @@ function runBreathCycle() {
         fog.classList.add('lifted');
       }
     }
-    
 
     function render() {
       const now = Date.now();
@@ -143,9 +142,9 @@ function runBreathCycle() {
         const scaleUp = lerp(0.7, 1, local);
         meta.currentScale = scaleUp;
         const swayY = (!organized && local > 0.05) ? Math.sin(now / 2200 + i * 1.7) * 4 * local : 0;
-const swayRot = (!organized && local > 0.05) ? Math.sin(now / 3000 + i) * 1.4 * local : 0;
-const rot = organized ? 0 : (def.rot + swayRot);
-el.style.transform = `translate(-50%,-50%) translate(0px, ${swayY}px) scale(${scaleUp}) rotate(${rot}deg)`;
+        const swayRot = (!organized && local > 0.05) ? Math.sin(now / 3000 + i) * 1.4 * local : 0;
+        const rot = organized ? 0 : (def.rot + swayRot);
+        el.style.transform = `translate(-50%,-50%) translate(0px, ${swayY}px) scale(${scaleUp}) rotate(${rot}deg)`;
       });
 
       const bgFrom = [255, 255, 255];
@@ -185,61 +184,73 @@ el.style.transform = `translate(-50%,-50%) translate(0px, ${swayY}px) scale(${sc
       raf = requestAnimationFrame(tick);
     }
 
-  function enterBigPicture() {
-  inBigPicture = true;
-  hideHint();
-  resetCanvasTransform();
-  organizeIntoColumns();
-  experienceScreen.classList.add('pannable');
-  setTimeout(() => {
-    fragEls.forEach(el => el && el.classList.add('tappable'));
-    hintText.textContent = 'Tap anything to look closer — drag to rearrange, pinch or scroll to explore';
-    hint.classList.remove('muted');
-    hint.classList.add('no-icon');
-    hint.style.opacity = '1';
-  }, 1000);
-}
+    function enterBigPicture() {
+      inBigPicture = true;
+      hideHint();
+      resetCanvasTransform();
+      organizeIntoColumns();
+      experienceScreen.classList.add('pannable');
+      setTimeout(() => {
+        fragEls.forEach(el => el && el.classList.add('tappable'));
+        hintText.textContent = 'Tap anything to look closer — drag to rearrange, pinch or scroll to explore';
+        hint.classList.remove('muted');
+        hint.classList.add('no-icon');
+        hint.style.opacity = '1';
+      }, 1000);
+    }
 
-    // Once everything's visible, it stops being a scattered pile and becomes
-// a tidy list — one column per fragment type. This is what actually
-// resolves the "overwhelming wall of notes" feeling: density stays,
-// chaos doesn't.
-const ROW_GAP_PERCENT = { bubble:13, sticky:22, photostrip:30, polaroid:21, receipt:27, reframe:22 };
-function organizeIntoColumns(){
-  const groups = {};
-  const order = [];
-  fragMeta.forEach((meta, i) => {
-    const t = meta.def.type;
-    if(!groups[t]){ groups[t] = []; order.push(t); }
-    groups[t].push(i);
-  });
-  const numCols = order.length;
-  const marginX = 10, marginY = 14;
-  const colWidth = (100 - marginX*2) / numCols;
-  order.forEach((type, colIdx) => {
-    const indices = groups[type];
-    const colLeft = marginX + colWidth*colIdx + colWidth/2;
-    const rowGap = ROW_GAP_PERCENT[type] || 14;
-    indices.forEach((fragIndex, rowIdx) => {
-      const el = fragEls[fragIndex];
-      if(!el) return;
-      el.style.transition = 'top 900ms ease, left 900ms ease';
-      el.style.top = (marginY + rowIdx*rowGap) + '%';
-      el.style.left = colLeft + '%';
-    });
-  });
-  organized = true;
-  setTimeout(() => {
-    fragEls.forEach(el => { if(el) el.style.transition = ''; });
-  }, 950);
-}
+    // Stacks each column using every card's REAL rendered height (not a
+    // guessed percentage) — this is what actually prevents overlap, since
+    // bubble text wraps to a different number of lines depending on what
+    // the user's content happens to be.
+    function organizeIntoColumns(){
+      const isNarrow = window.innerWidth < 480;
+      const typeToGroup = isNarrow
+        ? { bubble:'a', sticky:'a', reframe:'a', photostrip:'b', polaroid:'b', receipt:'b' }
+        : null;
+
+      const groups = {};
+      const order = [];
+      fragMeta.forEach((meta, i) => {
+        const t = typeToGroup ? typeToGroup[meta.def.type] : meta.def.type;
+        if(!groups[t]){ groups[t] = []; order.push(t); }
+        groups[t].push(i);
+      });
+
+      const numCols = order.length;
+      const marginXPercent = isNarrow ? 6 : 10;
+      const marginYPx = 24;
+      const gapPx = isNarrow ? 14 : 22;
+      const colWidthPercent = (100 - marginXPercent*2) / numCols;
+      const worldHeight = world.clientHeight || window.innerHeight;
+
+      order.forEach((groupKey, colIdx) => {
+        const indices = groups[groupKey];
+        const colLeftPercent = marginXPercent + colWidthPercent*colIdx + colWidthPercent/2;
+        let runningTopPx = marginYPx;
+        indices.forEach((fragIndex) => {
+          const el = fragEls[fragIndex];
+          if(!el) return;
+          const heightPx = el.getBoundingClientRect().height || 60;
+          const topPercent = (runningTopPx / worldHeight) * 100;
+          el.style.transition = 'top 900ms ease, left 900ms ease';
+          el.style.top = topPercent + '%';
+          el.style.left = colLeftPercent + '%';
+          runningTopPx += heightPx + gapPx;
+        });
+      });
+      organized = true;
+      setTimeout(() => {
+        fragEls.forEach(el => { if(el) el.style.transition = ''; });
+      }, 950);
+    }
 
     function dismissBigPictureHint() {
-    if (!inBigPicture) return;
-    hideHint();
-    continueBtn.style.opacity = '1';
-    continueBtn.style.pointerEvents = 'auto';
-    } 
+      if (!inBigPicture) return;
+      hideHint();
+      continueBtn.style.opacity = '1';
+      continueBtn.style.pointerEvents = 'auto';
+    }
     function finishExperience() {
       if (locked) return;
       locked = true;
@@ -320,7 +331,7 @@ function organizeIntoColumns(){
 
     let topZ = 9;
     function bringToFront(el) { topZ += 1; el.style.zIndex = topZ; }
-    
+
     const dragCleanups = [];
     function wireDraggable(el, cardEl, getBaseScale) {
       let startX = 0, startY = 0, startLeft = 0, startTop = 0, moved = 0, dragging = false;
@@ -401,13 +412,13 @@ function organizeIntoColumns(){
     experienceScreen.addEventListener('touchend', onTouchEnd);
 
     let panState = null;
-   const onPanDown = (e) => {
-  if (!inBigPicture || focusOriginEl) return;
-  if (e.target.closest('.fragment') || e.target.closest('#thought-wrap') || e.target.closest('button')) return;
-  experienceScreen.setPointerCapture(e.pointerId);
-  panState = { startX: e.clientX, startY: e.clientY, startPanX: canvasPanX, startPanY: canvasPanY };
-  experienceScreen.classList.add('panning');
-};
+    const onPanDown = (e) => {
+      if (!inBigPicture || focusOriginEl) return;
+      if (e.target.closest('.fragment') || e.target.closest('#thought-wrap') || e.target.closest('button')) return;
+      experienceScreen.setPointerCapture(e.pointerId);
+      panState = { startX: e.clientX, startY: e.clientY, startPanX: canvasPanX, startPanY: canvasPanY };
+      experienceScreen.classList.add('panning');
+    };
     const onPanMove = (e) => {
       if (!panState) return;
       canvasPanX = panState.startPanX + (e.clientX - panState.startX);
@@ -432,21 +443,21 @@ function organizeIntoColumns(){
       runBreathCycle();
     }, 6500);
 
-return () => {
-  cancelAnimationFrame(raf);
-  clearTimeout(breathTimer);
-  clearTimeout(noticeTimer);
-  continueBtn.removeEventListener('click', finishExperience);
-  focusBackdrop.removeEventListener('click', onBackdropClick);
-  focusCard.removeEventListener('click', onFocusCardClick);
-  dragCleanups.forEach(fn => fn());
-  experienceScreen.removeEventListener('wheel', onWheel);
-  experienceScreen.removeEventListener('touchstart', onTouchStart);
-  experienceScreen.removeEventListener('touchmove', onTouchMove);
-  experienceScreen.removeEventListener('touchend', onTouchEnd);
-  experienceScreen.removeEventListener('pointerdown', onPanDown);
-  experienceScreen.removeEventListener('pointermove', onPanMove);
-  window.removeEventListener('pointerup', onPanUp);
-  };
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(breathTimer);
+      clearTimeout(noticeTimer);
+      continueBtn.removeEventListener('click', finishExperience);
+      focusBackdrop.removeEventListener('click', onBackdropClick);
+      focusCard.removeEventListener('click', onFocusCardClick);
+      dragCleanups.forEach(fn => fn());
+      experienceScreen.removeEventListener('wheel', onWheel);
+      experienceScreen.removeEventListener('touchstart', onTouchStart);
+      experienceScreen.removeEventListener('touchmove', onTouchMove);
+      experienceScreen.removeEventListener('touchend', onTouchEnd);
+      experienceScreen.removeEventListener('pointerdown', onPanDown);
+      experienceScreen.removeEventListener('pointermove', onPanMove);
+      window.removeEventListener('pointerup', onPanUp);
+    };
   }, []);
 }
